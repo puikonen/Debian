@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+function speedup {
+# 
+echo ''
+show_question 'Nadaljujem s pohitritvijo sistema? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	 apt-get -y --force-yes install insserv readahead preload
+	 echo 'CONCURRENCY=shell' >> /etc/default/rcS
+	 touch  /.readahead_collect
+	 echo 'vm.swappiness=10' >> /etc/sysctl.conf
+	 echo 'vm.vfs_cache_pressure=30' >> /etc/sysctl.conf
+	 sed -i -r 's/(ext[2-4]\s+)defaults\s/\1defaults,noatime /g' /etc/fstab
+	 show_success 'Končano.'
+	 main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    speedup
+    ;;
+esac
+}
