@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+function samba {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo paketa SAMBA? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	 apt-get -y --force-yes install samba smbclient
+	 show_success 'Končano.'
+	 main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    samba
+    ;;
+esac
+}
