@@ -30,4 +30,6 @@ Slovenjenje in predelava za Debian (KDE4): puikonen03ATgmail.com
 
 
 
-Dovoljeno je uporabljati, kopirati, spreminjati in razširjati.
+
+
+Skripto je dovoljeno je uporabljati, kopirati, spreminjati in razširjati.
