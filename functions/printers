@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#
+
+dir="$(dirname "$0")"
+
+PRINTERS="$dir/data/printers.list"
+
+# NAMESTITEV PROGRAMOV ZA TISKANJE
+function printers {
+# 
+echo 'Namestitev pripomočkov za tiskanje...'
+echo ''
+echo 'Izbirate lahko med naslednjimi paketi:'
+echo ''
+for package in $(cat $PRINTERS)
+do
+echo -e '\t'$package
+done
+echo ''
+show_question 'Nadaljujem? (D)a, (N)e : ' && read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # Dodaj/spremeni željene pripomočke v datoteki "printers.list".
+    apt-get -y --force-yes install $(cat $PRINTERS)
+    show_success 'Končano.'
+	clear
+	sleep 5 | show_warning '!!! Zaženi program hannah-foo2zjs (Kicker-Programi-Nastavitve) !!!'
+    main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    printers
+    ;;
+esac
+}
