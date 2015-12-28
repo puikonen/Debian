@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#
+
+dir="$(dirname "$0")"
+
+THUNDERBIRD="$dir/data/thunderbird.list"
+
+# NAMESTITEV THUNDERBIRD-a
+function thunderbird {
+# 
+echo 'Namestitev Thunderbirda-a...'
+echo ''
+echo 'Izbirate lahko med naslednjimi paketi:'
+echo ''
+for package in $(cat $THUNDERBIRD)
+do
+echo -e '\t'$package
+done
+echo ''
+show_question 'Nadaljujem? (D)a, (N)e : ' && read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # Dodaj/spremeni datoteko "THUNDERBIRD.list".
+	echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list 
+	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com C1289A29
+	apt-get -y --force-yes update
+    apt-get -y --force-yes install $(cat $THUNDERBIRD)
+    show_success 'Končano.'
+    main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    thunderbird
+    ;;
+esac
+}
