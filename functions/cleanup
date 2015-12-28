@@ -1,0 +1,96 @@
+#!/bin/bash
+
+
+dir="$(dirname "$0")"
+
+PURGED="$dir/data/purge.list"
+
+# Čiščenje sistema
+function cleanup {
+echo ''
+show_question 'Kaj želiš narediti? '
+echo ''
+echo '1. Odstranil bom neuporabljene pre-nameščene pograme.'
+echo '2. Odstranil bom star(e) kernel(e)?'
+echo '3. Odstranil bom osirotele konfiguracijske datoteke.'
+echo '4. Odstranil začasne pakete.'
+echo 'R. Vrnitev?'
+echo ''
+show_question 'Tvoj izbor:' && read REPLY
+case $REPLY in
+# Odstranitev pre-nameščenih programov
+1)
+    show_info 'Odstranjujem pre-nameščene programe...'
+    echo ''
+    echo 'Izbirate lahko med naslednjimi paketi:'
+    echo ''
+    for package in $(cat $PURGED)
+    do 
+    echo -e '\t'$package
+    done
+    echo ''
+show_question 'Nadaljujem? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+        apt-get purge -y $(cat $PURGED)
+        show_success 'Končano.'
+        cleanup
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && cleanup
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        cleanup
+        ;;
+    esac
+    ;;
+# Odstrani stari(e) Kernel(e)
+2)
+    show_info 'Odstranjujem stari(e) Kernel(e)...'
+    show_warning "Če trenutno ne uporabljate najnovejšo različico jedra, ki je nameščeno na vašem sistemu, lahko nadaljevanje odstranjevanje pokvari sistem."
+    show_question 'Ali sis siguren, da boš nadaljeval? (D)a, (N)e : ' && read REPLY
+    case $REPLY in
+        [Dd]* ) 
+            dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | grep -v linux-libc-dev | xargs sudo apt-get -y purge
+            show_success 'Končano.'
+            cleanup
+            ;;
+        [Nn]* ) cleanup;;
+        * ) clear && show_error 'Oprosti, poskusi znova.' &&  cleanup;;
+    esac
+    cleanup
+    ;;
+# Odstranjevanje osirotelih konfiguracijskih datotek
+3)
+    show_info 'Odstranjujem osirotele konfiguracijske datoteke...'
+    apt-get autoremove -y
+    show_success 'Končano.'
+    cleanup
+    ;;
+# Odstranjevanje ostankov nastavitvenih datotek?
+4)
+    show_info 'Odstranjujem ostanke konfiguracijskih datotek...'
+    dpkg --purge $(COLUMNS=200 dpkg -l | grep '^rc' | tr -s ' ' | cut -d ' ' -f 2)
+    show_success 'Konec.'
+    cleanup
+    ;;
+# Odstranjevanje začasnih paketov.
+5)
+    show_info 'Odstranjujem začasne pakete...'
+    apt-get clean
+    show_success 'Konec.'
+    cleanup
+    ;;
+# Vrnitev
+[Rr]*) 
+    clear && main;;
+# Napačen izbor
+* ) 
+    clear && show_error '\aNapačen izbor. Poskusi znova.' && cleanup;;
+esac
+}
