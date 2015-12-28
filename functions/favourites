@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#
+
+dir="$(dirname "$0")"
+
+FAVOURITES="$dir/data/favourites.list"
+
+# NAMESTITEV PRILJUBLJENIH KDE PROGRAMOV
+function favourites {
+# 
+echo 'Namestitev priljubljenih programov za KDE...'
+echo ''
+echo 'Izbirate lahko med naslednjimi paketi:'
+echo ''
+for package in $(cat $FAVOURITES)
+do
+echo -e '\t'$package
+done
+echo ''
+show_question 'Nadaljujem? (D)a, (N)e : ' && read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # Dodaj/spremeni željene pakete z gonilniki v datoteki "FAVOURITES.list".
+    apt-get -y --force-yes install $(cat $FAVOURITES)
+    show_success 'Končano.'
+    main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    FAVOURITES
+    ;;
+esac
+}
