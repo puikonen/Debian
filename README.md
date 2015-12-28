@@ -22,9 +22,9 @@ Slovenjenje in predelava za Debian (KDE4): puikonen03ATgmail.com
 2. Odpakiraj Debian-master.zip na poljubno mesto.
 3. Odpri terminal in v odpakirani mapi Debian-master poženi:
 
-    bash debian-post-install-script.sh
+	bash debian-post-install-script.sh
 	
-	ali
+			ali
 	
 	./debian-post-install-script.sh
 
