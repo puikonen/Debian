@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+function texlive {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo Texlive-a? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	apt-get -y --force-yes install texlive texlive-lang-european texlive-math-extra texlive-fonts-extra texlive-latex-extra kile 
+	wget --directory-prefix="/usr/share/texmf-dist/tex/latex" $WebSite/stili.tar.gz
+	tar -xvf /usr/share/texmf-dist/tex/latex/stili.tar.gz -C /usr/share/texmf-dist/tex/latex
+	rm /usr/share/texmf-dist/tex/latex/stili.tar.gz
+	mktexlsr	
+	show_success 'Končano.'
+	main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    texlive
+    ;;
+esac
+}
