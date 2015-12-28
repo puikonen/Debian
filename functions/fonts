@@ -1,0 +1,63 @@
+#!/bin/bash
+
+
+
+function fonts {
+# 
+echo ''
+show_question 'Ali želiš nastaviti glajenje fontov? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	apt-get -y --force-yes install ttf-mscorefonts-installer ttf-freefont ttf-bitstream-vera ttf-dejavu ttf-liberation
+	mkdir /usr/share/fonts/WindowsFonts
+	clear
+	wget --directory-prefix="/usr/share/fonts/WindowsFonts" $WebSite/WindowsFonts.tar.gz
+	tar -xvf /usr/share/fonts/WindowsFonts/WindowsFonts.tar.gz -C /usr/share/fonts/WindowsFonts
+	rm /usr/share/fonts/WindowsFonts/WindowsFonts.tar.gz
+	chmod 755 /usr/share/fonts/WindowsFonts/*
+	fc-cache -fv
+			if [ -e /home/$UPORABNIK/.fonts.conf ]; then
+				rm /home/$UPORABNIK/.fonts.conf
+			fi
+	echo "<?xml version="1.0"?>
+			<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+			<fontconfig>
+				<match target="font">
+					<edit name="antialias" mode="assign">
+						<bool>true</bool>
+					</edit>
+					<edit name="hinting" mode="assign">
+						<bool>true</bool>
+					</edit>
+					<edit name="rgba" mode="assign">
+						<const>rgb</const>
+					</edit>
+					<edit name="autohint" mode="assign">
+						<bool>false</bool>
+					</edit>
+					<edit name="hintstyle" mode="assign">
+						<const>hintslight</const>
+					</edit>
+					<edit mode="assign" name="lcdfilter">
+						<const>lcddefault</const>
+					</edit>
+				</match>
+			</fontconfig>" >> /home/$UPORABNIK/.fonts.conf
+	    show_success 'Končano.'
+		main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    fonts
+    ;;
+esac
+}
