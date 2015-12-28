@@ -1,0 +1,29 @@
+#!/bin/bash
+
+
+function dropbox {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo Dropbox-a? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	echo -e "\deb http://linux.dropbox.com/debian $CODENAME main" | tee -a /etc/apt/sources.list
+	sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
+	apt-get update
+	apt-get -y install dropbox
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    dropbox
+    ;;
+esac
+}
