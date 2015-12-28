@@ -1,0 +1,30 @@
+#!/bin/bash
+
+
+function screenfetch {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo SCREENFETCH-a? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	apt-get -y --force-yes install screenfetch
+	echo -e " " >> /home/$UPORABNIK/.bashrc
+	echo -e "screenfetch" >> /home/$UPORABNIK/.bashrc
+	show_success 'Končano.'
+	main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    screenfetch
+    ;;
+esac
+}
