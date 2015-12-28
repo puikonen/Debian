@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+function rootactions {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo DOLPHIN pripomočkov za administratorje? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 	
+	wget --directory-prefix="/home/$UPORABNIK" http://kde-look.org/CONTENT/content-files/48411-rootactions_servicemenu_2.8.6.tar.gz
+	tar -xvf /home/$UPORABNIK/48411-rootactions_servicemenu_2.8.6.tar.gz -C /home/$UPORABNIK
+	mkdir /home/$UPORABNIK/.kde/share/kde4/services/ServiceMenus
+	cp -R /home/$UPORABNIK/rootactions_servicemenu_2.8.6/Root_Actions_2.8.6/dolphin-KDE4/*.desktop /home/$UPORABNIK/.kde/share/kde4/services/ServiceMenus
+	cp -R /home/$UPORABNIK/rootactions_servicemenu_2.8.6/Root_Actions_2.8.6/*.pl /usr/bin
+	cp -R /home/$UPORABNIK/rootactions_servicemenu_2.8.6/Root_Actions_2.8.6/*.pl /usr/local/bin
+	rm -rf /home/$UPORABNIK/rootactions_servicemenu_2.8.6
+	rm -df /home/$UPORABNIK/48411-rootactions_servicemenu_2.8.6.tar.gz
+	show_success 'Končano.'
+	main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    rootactions
+    ;;
+esac
+}
