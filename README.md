@@ -24,7 +24,7 @@ Slovenjenje in predelava za Debian (KDE4): puikonen03ATgmail.com
 
 	bash debian-post-install-script.sh
 	
-			ali
+                      ali
 	
 	./debian-post-install-script.sh
 
