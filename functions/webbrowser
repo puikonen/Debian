@@ -1,0 +1,108 @@
+#!/bin/bash
+
+#
+function webbrowser {
+echo ''
+show_question 'Kaj želiš narediti? '
+echo ''
+echo '1. Namestil bom Chromium.'
+echo '2. Namestil bom Chrome.'
+echo '3. Namestil bom Firefox.'
+echo 'R. Vrnitev?'
+echo ''
+show_question 'Tvoj izbor:' && read REPLY
+case $REPLY in
+# Chromium
+1)  
+show_question 'Nadaljujem z nameščanjem brskalnika Chromium? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+     apt-get -y --force-yes install chromium chromium-l10n pepperflashplugin-nonfree
+	 show_success 'Končano.'
+	 webbrowser
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && webbrowser
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        webbrowser
+        ;;
+    esac
+    ;;
+# Chrome
+2)
+	show_question 'Nadaljujem z nameščanjem brskalnika Chrome? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+[	Dd]* )
+    # 
+	MACHINE_TYPE=`uname -m`
+	if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+	  # 64-bit 
+		cd $UPORABNIK/Downloads
+		wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+		dpkg -i google-chrome-stable_current_amd64.deb
+		rm google-chrome-stable_current_amd64.deb
+		show_success 'Končano.'
+		webbrowser  
+	else
+	  # 32-bit
+		cd $UPORABNIK/Downloads
+		wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
+		dpkg -i google-chrome-stable_current_i386.deb
+		rm google-chrome-stable_current_i386.deb
+		show_success 'Končano.'
+		webbrowser
+	fi
+        ;;
+    esac
+    ;;
+# Firefox
+3)
+    show_question 'Nadaljujem z nameščanjem brskalnika Firefox? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+  # Potrditev
+	[Dd]* )
+		# Dodaj/spremeni datoteko "firefox.list".
+		show_warrning 'Pred nameščanjem moram odstraniti brskalnik Iceweasel.'
+		echo ''
+		apt-get -y remove iceweasel
+		echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list 
+		apt-key adv --recv-keys --keyserver keyserver.ubuntu.com C1289A29
+		apt-get -y --force-yes update
+		apt-get -y --force-yes install firefox-mozilla-build
+		show_success 'Končano.'
+		webbrowser
+		;;
+	# Zavrnitev
+	[Nn]* )
+		clear && webbrowser
+		;;
+	# Napaka
+	* )
+		clear && show_error '\aOprosti, poskusi znova.'
+		webbrowser
+		;;
+	esac
+    ;;
+# Vrnitev
+	[Rr]*) 
+		clear && main;;
+	# Napačen izbor
+	* ) 
+		clear && show_error '\aNapačen izbor. Poskusi znova.' && webbrowser;;
+	esac
+   
+} 
+  
+  
+  
+  
+  
