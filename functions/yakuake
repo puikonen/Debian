@@ -1,0 +1,31 @@
+#!/bin/bash
+
+
+function yakuake {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo emulatorja KDE terminala YAKUAKE? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	apt-get -y --force-yes install yakuake
+	echo -e "#!/bin/bash" >> /home/$UPORABNIK/.kde/Autostart/autostart.sh
+	echo -e "yakuake" >> /home/$UPORABNIK/.kde/Autostart/autostart.sh
+	chmod 755 /home/$UPORABNIK/.kde/Autostart/autostart.sh
+	show_success 'Končano.'
+	main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    yakuake
+    ;;
+esac
+}
