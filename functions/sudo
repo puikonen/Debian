@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+function sudo {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo SUDO? (D)a, (N)e : ' && read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    
+#----- Namestitev SUDO -----#
+if [ -e /etc/sudoers ]; then
+	echo -e "$UPORABNIK ALL=(ALL) ALL" >> /etc/sudoers
+	show_success 'Končano.'
+	main
+else
+	apt-get -q -y --force-yes install sudo
+	echo -e "$UPORABNIK ALL=(ALL) ALL" >> /etc/sudoers
+	show_success 'Končano.'	
+	main
+fi
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    sudo
+    ;;
+esac
+}
