@@ -1,0 +1,165 @@
+#!/bin/bash
+
+#
+function graphics {
+echo ''
+show_question 'Kaj želiš narediti? '
+echo ''
+echo '1. Namestil bom grafične gonilnike za VirtualBox.'
+echo '2. Namestil bom open source grafične gonilnike za ATI.'
+echo '3. Namestil bom grafične gonilnike za NVIDIO.'
+echo '4. Namestil bom grafične gonilnike za BUMBLEBEE.'
+echo '5. Namestil bom grafične gonilnike za INTEL.'
+echo '6. Namestil bom grafične gonilnike za NOVEAU.'
+echo 'R. Vrnitev?'
+echo ''
+echo 'To je tvoja video kartica:' lspci | grep VGA
+echo ''
+show_question 'Tvoj izbor:' && read REPLY
+case $REPLY in
+# VirtualBox
+1)  
+show_question 'Nadaljujem z nameščanjem gonilnikov za VirtualBox? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+     apt-get -y --force-yes install virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11  
+	 show_success 'Končano. Potreben je restart sistema!'
+	 graphics
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && graphics
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        graphics
+        ;;
+    esac
+    ;;
+# ATI
+2)
+show_question 'Nadaljujem z nameščanjem open source gonilnikov za ATI? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+     apt-get -y --force-yes install firmware-linux-nonfree libgl1-mesa-dri xserver-xorg-video-ati   
+	 show_success 'Končano. Potreben je restart sistema!'
+	 graphics
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && graphics
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        graphics
+        ;;
+    esac
+    ;;
+# NVIDIA
+3)
+    show_question 'Nadaljujem z nameščanjem gonilnikov za NVIDIO? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+     apt-get -y --force-yes install nvidia-glx nvidia-kernel-dkms nvidia-xconfig nvidia-settings  
+	 show_success 'Končano. Potreben je restart sistema!'
+	 graphics
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && graphics
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        graphics
+        ;;
+    esac
+    ;;
+# BUMBLEBEE
+4)
+    show_question 'Nadaljujem z nameščanjem gonilnikov za BUMBLEBEE? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+     apt-get -y --force-yes install bumblebee primus 
+	 show_success 'Končano. Potreben je restart sistema!'
+	 graphics
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && graphics
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        graphics
+        ;;
+    esac
+    ;;
+# INTEL.
+5)
+     show_question 'Nadaljujem z nameščanjem gonilnikov za INTEL? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+     apt-get -y --force-yes install xserver-xorg-video-intel
+	 show_success 'Končano. Potreben je restart sistema!'
+	 graphics
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && graphics
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        graphics
+        ;;
+    esac
+    ;;
+# NOVEAU.
+6)
+  show_question 'Nadaljujem z nameščanjem gonilnikov za NOVEAU? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+    [Dd]* )
+     apt-get -y --force-yes install xserver-xorg-video-nouveau  
+	 show_success 'Končano. Potreben je restart sistema!'
+	 graphics
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && graphics
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        graphics
+        ;;
+    esac
+	;;
+	# Vrnitev
+[Rr]*) 
+    clear && main;;
+# Napačen izbor
+* ) 
+    clear && show_error '\aNapačen izbor. Poskusi znova.' && cleanup;;
+esac
+   
+} 
+  
+  
+  
+  
+  
