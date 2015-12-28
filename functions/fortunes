@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+function fortunes {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo programa FORTUNES? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	apt-get -y --force-yes install fortunes
+	wget --directory-prefix="/usr/share/games/fortunes" $WebSite/chucknorris.tar.gz
+	tar -xvf /usr/share/games/fortunes/chucknorris.tar.gz -C /usr/share/games/fortunes/
+	rm /usr/share/games/fortunes/chucknorris.tar.gz
+	echo -e " " >> /home/$UPORABNIK/.bashrc
+	echo -e "fortune chucknorris" >> /home/$UPORABNIK/.bashrc
+	echo -e "\n\n"
+	show_success 'Končano.'
+	main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    fortunes
+    ;;
+esac
+}
