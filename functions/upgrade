@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+function upgrade {
+# 
+echo ''
+show_question 'Nadaljujem z nadgradnjo sistema? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # Posodobitev repozitorijev
+    show_info 'Posodabljam informacije z repozitorijev...'
+	sed -i 's/main/main contrib non-free/g' /etc/apt/sources.list
+	sed -i -r 's/(ext[2-4]\s+)defaults\s/\1defaults,noatime /g' /etc/fstab
+    apt-get -y --force-yes update
+    # Nadgradnja sistema
+    echo 'Nadgrajujem sistem...'
+    apt-get -q -y --force-yes dist-upgrade 
+    show_success 'Končano.'
+    main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    upgrade
+    ;;
+esac
+}
