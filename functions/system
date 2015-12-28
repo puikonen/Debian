@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#
+
+dir="$(dirname "$0")"
+
+UTILS="$dir/data/utilities.list"
+
+# NAMESTITEV SISTEMSKIH ORODIJ
+function system {
+# 
+echo 'Namestitev priljubljenih sistemskih orodij...'
+echo ''
+echo 'Izbirate lahko med naslednjimi paketi:'
+echo ''
+for package in $(cat $UTILS)
+do
+echo -e '\t'$package
+done
+echo ''
+show_question 'Nadaljujem? (D)a, (N)e : ' && read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # Dodaj/spremeni željena sistemska orodja v datoteko "utilities.list".
+    apt-get -y --force-yes install $(cat $UTILS)
+	echo -e " " >> /home/$UPORABNIK/.bashrc
+	echo -e "PS1='\[\e[0;32m\]\u\[\e[m\] \[\e[1;34m\]\w\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'" >> /home/$UPORABNIK/.bashrc
+    show_success 'Končano.'
+    main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    system
+    ;;
+esac
+}
