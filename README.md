@@ -19,8 +19,8 @@ Slovenjenje in predelava za Debian (KDE4): puikonen03ATgmail.com
 ##Uporaba:
 
 1. wget https://github.com/puikonen/Debian/archive/master.zip
-1. Odpakiraj debian.tar.gz na poljubno mesto.
-2. Odpri terminal in v odpakirani mapi debian poženi:
+2. Odpakiraj Debian-master.zip na poljubno mesto.
+3. Odpri terminal in v odpakirani mapi Debian-master poženi:
 
     # bash debian-post-install-script.sh
 	
