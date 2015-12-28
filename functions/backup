@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+function backup {
+# 
+echo ''
+show_question 'Nadaljujem z obnovitvijo nastavitev iz backup.tar.gz? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	sleep 4 | echo -e "\e[36mDatoteka backup.tar.gz mora vsebovati mape:\033[0m\033[31m .config, .kde4\033[0m\033[31m in \033[0m\033[31m .local\e[36m!"
+	wget --directory-prefix="/home/$UPORABNIK" $WebSite/backup.tar.gz
+	rm -df /home/$UPORABNIK/.config
+	rm -df /home/$UPORABNIK/.kde4
+	rm -df /home/$UPORABNIK/.local
+	tar -xvf /home/$UPORABNIK/backup.tar.gz -C /home/$UPORABNIK
+	rm /home/$UPORABNIK/backup.tar.gz	
+	show_success 'Končano.'
+	main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    backup
+    ;;
+esac
+}
