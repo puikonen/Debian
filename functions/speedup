@@ -17,6 +17,9 @@ case $REPLY in
 	 echo 'vm.swappiness=10' >> /etc/sysctl.conf
 	 echo 'vm.vfs_cache_pressure=30' >> /etc/sysctl.conf
 	 sed -i -r 's/(ext[2-4]\s+)defaults\s/\1defaults,noatime /g' /etc/fstab
+	 echo''
+	 show_warning 'Namesti še e4rat. Pomagaj si s stranjo: http://www.howtogeek.com/69753/how-to-cut-your-linux-pcs-boot-time-in-half-with-e4rat/"
+	 echo ''
 	 show_success 'Končano.'
 	 main
     ;;
