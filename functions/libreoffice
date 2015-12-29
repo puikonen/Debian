@@ -12,8 +12,12 @@ case $REPLY in
     
 #----- Namestitev LIBREOFFICE -----#
 
+repo=$CODENAME-backports
 
-echo -e "\ndeb http://http.debian.net/debian $CODENAME-backports main" | tee -a /etc/apt/sources.list 
+if ! grep -q "$repo" /etc/apt/sources.list; then
+	echo -e "\ndeb http://http.debian.net/debian $CODENAME-backports main" | tee -a /etc/apt/sources.list    
+fi
+
 apt-get -y --force-yes update
 apt-get -y --force-yes upgrade
 apt-get -y --force-yes -t jessie-backports install libreoffice
