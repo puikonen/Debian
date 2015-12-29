@@ -209,14 +209,15 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 
-show_question 'Vnesi svoje uporabniško ime :\n\n ' && read UPORABNIK
+show_question 'Vnesi svoje uporabniško ime :\n ' && read UPORABNIK
+echo ""
+echo ""
 
+show_question 'Vnesi naslov spletne strani, kjer imaš shranjene backup.tar.gz, stili.tar.gz, WindowsFonts.tar.gz in chucknorris.tar.gz:\n' && read WebSite
+echo ""
+echo ""
 
-
-show_question 'Vnesi naslov spletne strani, kjer imaš shranjene backup.tar.gz, stili.tar.gz, WindowsFonts.tar.gz in chucknorris.tar.gz:\n\n' && read WebSite
-
-
-show_question 'Vnesi kodno ime nameščenega Debian sistema:\n\n' && read CODENAME
+show_question 'Vnesi kodno ime nameščenega Debian sistema (npr. jessie):\n\n' && read CODENAME
 
 clear 
 
