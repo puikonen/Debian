@@ -40,7 +40,7 @@ show_question 'Nadaljujem z nameščanjem brskalnika Chromium? (D)a, (N)e : ' &&
     echo ''
     case $REPLY in
     # Potrditev
-[	Dd]* )
+[Dd]* )
     # 
 	MACHINE_TYPE=`uname -m`
 	if [ ${MACHINE_TYPE} == 'x86_64' ]; then
@@ -71,7 +71,7 @@ show_question 'Nadaljujem z nameščanjem brskalnika Chromium? (D)a, (N)e : ' &&
   # Potrditev
 	[Dd]* )
 		# Dodaj/spremeni datoteko "firefox.list".
-		show_warrning 'Pred nameščanjem moram odstraniti brskalnik Iceweasel.'
+		show_warning 'Pred nameščanjem moram odstraniti brskalnik Iceweasel.'
 		echo ''
 		apt-get -y remove iceweasel
 		echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list 
