@@ -15,7 +15,7 @@ case $REPLY in
 	cp -r $dir/data/chucknorris/. /usr/share/games/fortunes/
 	echo -e " " >> /home/$UPORABNIK/.bashrc
 	echo -e "fortune chucknorris" >> /home/$UPORABNIK/.bashrc
-	echo -e "\n\n"
+	echo -e "\\n"
 	show_success 'Končano.'
 	main
     ;;
