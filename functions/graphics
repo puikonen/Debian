@@ -13,9 +13,11 @@ echo '5. Namestil bom grafične gonilnike za INTEL.'
 echo '6. Namestil bom grafične gonilnike za NOVEAU.'
 echo 'R. Vrnitev?'
 echo ''
-echo 'To je tvoja video kartica:' lspci | grep VGA
+echo "To je tvoja video kartica:" 
 echo ''
+lspci | grep VGA
 show_question 'Tvoj izbor:' && read REPLY
+echo ''
 case $REPLY in
 # VirtualBox
 1)  
