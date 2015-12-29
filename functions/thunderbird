@@ -24,7 +24,11 @@ case $REPLY in
 # Potrditev
 [Dd]* )
     # Dodaj/spremeni datoteko "THUNDERBIRD.list".
-	echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list 
+	repob=$CODENAME-backports
+		repo=http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt
+	if ! grep -q "$repob" /etc/apt/sources.list; then
+		echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list     
+	fi
 	apt-key adv --recv-keys --keyserver keyserver.ubuntu.com C1289A29
 	apt-get -y --force-yes update
     apt-get -y --force-yes install $(cat $THUNDERBIRD)
