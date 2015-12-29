@@ -16,7 +16,7 @@ case $REPLY in
 echo -e "\ndeb http://http.debian.net/debian $CODENAME-backports main" | tee -a /etc/apt/sources.list 
 apt-get -y --force-yes update
 apt-get -y --force-yes upgrade
-apt-get -t -y --force-yes jessie-backports install libreoffice
+apt-get -y --force-yes -t jessie-backports install libreoffice
 show_success 'Končano.'
 main
     ;;
