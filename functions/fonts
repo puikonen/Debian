@@ -1,18 +1,24 @@
 #!/bin/bash
 
-
-
+#
 function fonts {
-# 
 echo ''
-show_question 'Ali želiš nastaviti glajenje fontov? (D)a, (N)e : ' 
-read REPLY
+show_question 'Kaj želiš narediti? '
 echo ''
+echo '1. Namestil bom Windows fonte s pomočjo WindowsFonts.tar.gz na moji spletni strani.'
+echo '2. Namestil bom Windows fonte iz mape na računalniku.'
+echo 'R. Vrnitev?'
+echo ''
+show_question 'Tvoj izbor:' && read REPLY
 case $REPLY in
-# Potrditev
-[Dd]* )
-    # 
-	apt-get -y --force-yes install ttf-mscorefonts-installer ttf-freefont ttf-bitstream-vera ttf-dejavu ttf-liberation
+# Chromium
+1)  
+show_question 'Nadaljujem z nameščanjem Windows fontov s spletne strani? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Namestitev fontov s spletne strani s pomočjo WindowsFonts.tar.gz.
+    [Dd]* )
+    apt-get -y --force-yes install ttf-mscorefonts-installer ttf-freefont ttf-bitstream-vera ttf-dejavu ttf-liberation
 	mkdir /usr/share/fonts/WindowsFonts
 	clear
 	wget --directory-prefix="/usr/share/fonts/WindowsFonts" $WebSite/WindowsFonts.tar.gz
@@ -49,15 +55,86 @@ case $REPLY in
 			</fontconfig>" >> /home/$UPORABNIK/.fonts.conf
 	    show_success 'Končano.'
 		main
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && fonts
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        fonts
+        ;;
+    esac
     ;;
-# Zavrnitev
-[Nn]* )
-    clear && main
+# Namestitov fontov s pomočjo lokalne mape WindowsFonts
+2)
+	show_question 'Nadaljujem z nameščanjem Windows fontov iz lokalne mape? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+[Dd]* )
+    # 
+	show_question 'Vnesi pot do lokalne mape z Windows fonti (npr. /home/user/WinowsFonts):\n\n' && read WinFonts
+	apt-get -y --force-yes install ttf-mscorefonts-installer ttf-freefont ttf-bitstream-vera ttf-dejavu ttf-liberation
+	clear
+	show_warning 'Kopiranje fontov zna malce potrajati.'
+	echo ''
+	cp -r $WinFonts/. /usr/share/fonts/WindowsFonts
+	chmod 755 /usr/share/fonts/WindowsFonts/*
+	fc-cache -fv
+			if [ -e /home/$UPORABNIK/.fonts.conf ]; then
+				rm /home/$UPORABNIK/.fonts.conf
+			fi
+	echo "<?xml version="1.0"?>
+			<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+			<fontconfig>
+				<match target="font">
+					<edit name="antialias" mode="assign">
+						<bool>true</bool>
+					</edit>
+					<edit name="hinting" mode="assign">
+						<bool>true</bool>
+					</edit>
+					<edit name="rgba" mode="assign">
+						<const>rgb</const>
+					</edit>
+					<edit name="autohint" mode="assign">
+						<bool>false</bool>
+					</edit>
+					<edit name="hintstyle" mode="assign">
+						<const>hintslight</const>
+					</edit>
+					<edit mode="assign" name="lcdfilter">
+						<const>lcddefault</const>
+					</edit>
+				</match>
+			</fontconfig>" >> /home/$UPORABNIK/.fonts.conf
+		show_warning 'V KDE4 sistemskih nastavitvah - videz programov - pisave: omogoči glajenje pisav in nastavi točkovno izrisovanje na RGB. Slog glajenja naj bo Malenkostno!!!'
+	    show_success 'Končano.'
+		main	
+        ;;
+	# Zavrnitev
+	[Nn]* )
+		clear && fonts
+		;;
+	# Napaka
+	* )
+		clear && show_error '\aOprosti, poskusi znova.'
+		fonts
+		;;
+	esac
     ;;
-# Napaka
-* )
-    clear && show_error '\aOprosti, poskusi znova.'
-    fonts
-    ;;
-esac
-}
+# Vrnitev
+	[Rr]*) 
+		clear && main;;
+	# Napačen izbor
+	* ) 
+		clear && show_error '\aNapačen izbor. Poskusi znova.' && webbrowser;;
+	esac
+} 
+  
+  
+  
+  
+  
