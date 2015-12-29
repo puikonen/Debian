@@ -74,7 +74,10 @@ show_question 'Nadaljujem z nameščanjem brskalnika Chromium? (D)a, (N)e : ' &&
 		show_warning 'Pred nameščanjem moram odstraniti brskalnik Iceweasel.'
 		echo ''
 		apt-get -y remove iceweasel
-		echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list 
+		repoa=http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt
+	if ! grep -q "$repoa" /etc/apt/sources.list; then
+		echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list     
+	fi
 		apt-key adv --recv-keys --keyserver keyserver.ubuntu.com C1289A29
 		apt-get -y --force-yes update
 		apt-get -y --force-yes install firefox-mozilla-build
