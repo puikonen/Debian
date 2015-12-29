@@ -12,9 +12,7 @@ case $REPLY in
 [Dd]* )
     # 
 	apt-get -y --force-yes install fortunes
-	wget --directory-prefix="/usr/share/games/fortunes" $WebSite/chucknorris.tar.gz
-	tar -xvf /usr/share/games/fortunes/chucknorris.tar.gz -C /usr/share/games/fortunes/
-	rm /usr/share/games/fortunes/chucknorris.tar.gz
+	cp -r $dir/data/chucknorris/. /usr/share/games/fortunes/
 	echo -e " " >> /home/$UPORABNIK/.bashrc
 	echo -e "fortune chucknorris" >> /home/$UPORABNIK/.bashrc
 	echo -e "\n\n"
