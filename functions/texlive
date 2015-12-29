@@ -1,32 +1,78 @@
 #!/bin/bash
 
-
+#
 function texlive {
-# 
 echo ''
-show_question 'Nadaljujem z namestitvijo Texlive-a? (D)a, (N)e : ' 
-read REPLY
+show_question 'Kaj želiš narediti? '
 echo ''
+echo '1. Namestil bom TexLive s pomočjo stili.tar.gz na moji spletni strani.'
+echo '2. Namestil bom TexLive iz mape na računalniku.'
+echo 'R. Vrnitev?'
+echo ''
+show_question 'Tvoj izbor:' && read REPLY
 case $REPLY in
-# Potrditev
-[Dd]* )
-    # 
-	apt-get -y --force-yes install texlive texlive-lang-european texlive-math-extra texlive-fonts-extra texlive-latex-extra kile 
+# Namestitev s pomočjo spletne strani
+1)  
+show_question 'Nadaljujem z nameščanjem TexLive s spletne strani? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Namestitev TexLive s spletne strani s pomočjo stili.tar.gz.
+    [Dd]* )
+    apt-get -y --force-yes install texlive texlive-lang-european texlive-math-extra texlive-fonts-extra texlive-latex-extra kile 
 	wget --directory-prefix="/usr/share/texmf-dist/tex/latex" $WebSite/stili.tar.gz
-	tar -xvf /usr/share/texmf-dist/tex/latex/stili.tar.gz -C /usr/share/texmf-dist/tex/latex
+	tar -xvf /usr/share/texmf-dist/tex/latex/stili.tar.gz -C /usr/share/texlive/texmf-dist/tex/latex
 	rm /usr/share/texmf-dist/tex/latex/stili.tar.gz
 	mktexlsr	
 	show_success 'Končano.'
 	main
+        ;;
+    # Zavrnitev
+    [Nn]* )
+        clear && texlive
+        ;;
+    # Napaka
+    * )
+        clear && show_error '\aOprosti, poskusi znova.'
+        texlive
+        ;;
+    esac
     ;;
-# Zavrnitev
-[Nn]* )
-    clear && main
+# Namestitov TexLive s pomočjo lokalne mape Stili
+2)
+	show_question 'Nadaljujem z TexLive iz lokalne mape? (D)a, (N)e : ' && read REPLY
+    echo ''
+    case $REPLY in
+    # Potrditev
+[Dd]* )
+    # 
+	show_question 'Vnesi pot do lokalne mape stili (npr. /home/user/Stili):\n\n' && read stili
+    apt-get -y --force-yes install texlive texlive-lang-european texlive-math-extra texlive-fonts-extra texlive-latex-extra kile 
+	cp -r $stili/. usr/share/texlive/texmf-dist/tex/latex
+	mktexlsr	
+	show_success 'Končano.'
+	main
+        ;;
+	# Zavrnitev
+	[Nn]* )
+		clear && texlive
+		;;
+	# Napaka
+	* )
+		clear && show_error '\aOprosti, poskusi znova.'
+		texlive
+		;;
+	esac
     ;;
-# Napaka
-* )
-    clear && show_error '\aOprosti, poskusi znova.'
-    texlive
-    ;;
-esac
-}
+# Vrnitev
+	[Rr]*) 
+		clear && main;;
+	# Napačen izbor
+	* ) 
+		clear && show_error '\aNapačen izbor. Poskusi znova.' && webbrowser;;
+	esac
+} 
+  
+  
+  
+  
+  
