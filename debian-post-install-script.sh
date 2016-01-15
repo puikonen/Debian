@@ -41,6 +41,7 @@ dir="$(dirname "$0")"
 . $dir/functions/fonts
 . $dir/functions/printers
 . $dir/functions/samba
+. $dir/functions/mtp
 . $dir/functions/webbrowser
 . $dir/functions/thunderbird
 . $dir/functions/libreoffice
@@ -102,17 +103,18 @@ show_listitem '6. Namestil bom dodatne KDE programe.'
 show_listitem '7. Izboljšal bom glajenje fontov.'
 show_listitem '8. Namestil bom gonilnike in pripomočke za tiskalnike.'
 show_listitem '9. Namestil bom SAMBO.'
-show_listitem '10. Namestil bom spletni brskalnik.'
-show_listitem '11. Namestil bom Thunderbird.'
-show_listitem '12. Namestil bom LibreOffice s pomočjo Debian Backports.'
-show_listitem '13. Namestil bom Yakuake.'
-show_listitem '14. Namestil bom Dropbox.'
-show_listitem '15. Namestil bom Screenfetch.'
-show_listitem '16. Namestil bom Fortunes.'
-show_listitem '17. Namestil bom TexLive.'
-show_listitem '18. Namestil bom RootActions.'
-show_listitem '19. Obnovil bom nastavitve iz backup.tar.gz.'
-show_listitem '20. Počistil bom sistem.'
+show_listitem '10. Namestil bom podporo za tablice in telefone.'
+show_listitem '11. Namestil bom spletni brskalnik.'
+show_listitem '12. Namestil bom Thunderbird.'
+show_listitem '13. Namestil bom LibreOffice s pomočjo Debian Backports.'
+show_listitem '14. Namestil bom Yakuake.'
+show_listitem '15. Namestil bom Dropbox.'
+show_listitem '16. Namestil bom Screenfetch.'
+show_listitem '17. Namestil bom Fortunes.'
+show_listitem '18. Namestil bom TexLive.'
+show_listitem '19. Namestil bom RootActions.'
+show_listitem '20. Obnovil bom nastavitve iz backup.tar.gz.'
+show_listitem '21. Počistil bom sistem.'
 show_listitem 'q. Quit?'
 echo ''
 show_question 'Vnesi svoj izbor :' && read REPLY
@@ -126,17 +128,18 @@ case $REPLY in
     7) clear && fonts;; # Glajenje fontov 
     8) clear && printers;; # Tiskalniki 
     9) clear && samba;; # SAMBA 
-    10) clear && webbrowser;; # Spletni brskalnik 
-	11) clear && thunderbird;; # Thunderbird 
-	12) clear && libreoffice;; # LibreOffice 
-    13) clear && yakuake;; # Yakuake 
-    14) clear && dropbox;; # Dropbox 
-	15) clear && screenfetch;; # Screenfetch	
-	16) clear && fortunes;; # Fortunes 
-	17) clear && texlive;; # TexLive 
-	18) clear && rootactions;; # Rootactions 
-	19) clear && backup;; # Obnovitev nastavitev iz backupa 	
-    20) clear && cleanup;; # Čiščenje sistema
+	10) clear && mtp;; # Podpora za tablice in telefone 
+    11) clear && webbrowser;; # Spletni brskalnik 
+	12) clear && thunderbird;; # Thunderbird 
+	13) clear && libreoffice;; # LibreOffice 
+    14) clear && yakuake;; # Yakuake 
+    15) clear && dropbox;; # Dropbox 
+	16) clear && screenfetch;; # Screenfetch	
+	17) clear && fortunes;; # Fortunes 
+	18) clear && texlive;; # TexLive 
+	19) clear && rootactions;; # Rootactions 
+	20) clear && backup;; # Obnovitev nastavitev iz backupa 	
+    21) clear && cleanup;; # Čiščenje sistema
     [Qq]* ) echo '' && quit;; # Konec
     * ) clear && show_error '\aNapačen izbor, poskusi znova.' && main;;
 esac
@@ -186,7 +189,7 @@ echo -e "                                "
 echo ''
 show_header '#--------------------------------------------------------------------------#'
 show_header '#                        Debian Post-Install Script                        #'
-show_header '#                              version: 1.00                               #'
+show_header '#                              version: 1.01                               #'
 show_header '#          Avtor skripte - Ubuntu Post Install Script: Sam Hewitt          #'
 show_header '#          Prevedel in prilagodil za Debian (KDE4): Franc Žganjar          #'
 show_header '#--------------------------------------------------------------------------#'
@@ -213,7 +216,7 @@ show_question 'Vnesi svoje uporabniško ime :\n ' && read UPORABNIK
 echo ""
 echo ""
 
-show_question 'Vnesi naslov spletne strani, kjer imaš shranjene backup.tar.gz, stili.tar.gz, WindowsFonts.tar.gz in chucknorris.tar.gz:\n' && read WebSite
+show_question 'Vnesi naslov spletne strani, kjer imaš shranjene backup.tar.gz, stili.tar.gz in WindowsFonts.tar.gz:\n' && read WebSite
 echo ""
 echo ""
 
