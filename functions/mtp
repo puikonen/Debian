@@ -1,0 +1,29 @@
+#!/bin/bash
+
+
+function mtp {
+# 
+echo ''
+show_question 'Nadaljujem z namestitvijo podpore za tablične računalnike in telefone? (D)a, (N)e : ' 
+read REPLY
+echo ''
+case $REPLY in
+# Potrditev
+[Dd]* )
+    # 
+	apt-get -y --force-yes install mtp gmtp mtp-tools jmtpfs
+	echo -e "\\n"
+	show_success 'Končano.'
+	main
+    ;;
+# Zavrnitev
+[Nn]* )
+    clear && main
+    ;;
+# Napaka
+* )
+    clear && show_error '\aOprosti, poskusi znova.'
+    mtp
+    ;;
+esac
+}
