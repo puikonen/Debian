@@ -11,7 +11,7 @@ case $REPLY in
 # Potrditev
 [Dd]* )
     # 
-	apt-get -y --force-yes install mtp gmtp mtp-tools jmtpfs
+	apt-get -y --force-yes install gmtp mtp-tools jmtpfs
 	echo -e "\\n"
 	show_success 'Končano.'
 	main
